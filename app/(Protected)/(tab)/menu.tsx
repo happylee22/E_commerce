@@ -1,0 +1,9 @@
+import { Text, View } from 'react-native';
+
+const menu = () => {
+  return (
+    <View>
+      <Text>menu</Text>
+    </View>
+  );
+};

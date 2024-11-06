@@ -1,7 +1,8 @@
 import { Text, View } from 'react-native';
 import Wrapper from '@/components/Ui/Wrapper';
-import Title from '@/components/Ui/Title';
+
 import LoginForm from '@/components/Form/LoginForm';
+import { Title } from '@/components/Ui/Title';
 
 export default function login() {
   return (

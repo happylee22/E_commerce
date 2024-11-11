@@ -1,6 +1,6 @@
 import { StyleSheet, Text, View } from 'react-native';
 import React, { PropsWithChildren } from 'react';
-import { Colors } from '@/constants/Colors';
+
 import { colors } from '@/Constant';
 
 type Props = {};

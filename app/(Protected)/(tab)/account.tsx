@@ -7,3 +7,5 @@ const account = () => {
     </View>
   );
 };
+
+export default account;

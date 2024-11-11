@@ -16,8 +16,8 @@ type Props = {
   Value: string;
   onChangeText: (text: string) => void;
   keyboardType?: KeyboardTypeOptions;
-  label: String;
-  secureTextEntry: boolean;
+  label: string;
+  secureTextEntry?: boolean;
   error: string;
 
   toggleSecure?: () => void;
@@ -47,13 +47,15 @@ export const CustomInput = ({
           keyboardType={keyboardType}
           secureTextEntry={secureTextEntry}
         />
-        <TouchableOpacity onPress={toggleSecure}>
-          {secureTextEntry ? (
-            <AntDesign name={secureTextEntry ? 'eyeo' : 'eye'} />
-          ) : (
-            <FontAwesome name="eye-slash" size={30} />
-          )}
-        </TouchableOpacity>
+        {password && (
+          <TouchableOpacity onPress={toggleSecure}>
+            {secureTextEntry ? (
+              <AntDesign name={'eye'} size={30} />
+            ) : (
+              <FontAwesome name="eye-slash" size={30} />
+            )}
+          </TouchableOpacity>
+        )}
       </View>
       {error && <Text style={styles.error}>{error}</Text>}
     </View>

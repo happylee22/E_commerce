@@ -7,3 +7,4 @@ const more = () => {
     </View>
   );
 };
+export default more;

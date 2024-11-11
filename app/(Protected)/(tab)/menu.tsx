@@ -7,3 +7,5 @@ const menu = () => {
     </View>
   );
 };
+
+export default menu;

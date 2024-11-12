@@ -17,6 +17,7 @@ export default function TabsLayout() {
           headerTintColor: colors.dark,
           headerStyle: { backgroundColor: colors.dark },
           headerRight: () => <CatIcon />,
+          tabBarHideOnKeyboard: true,
         }}
       >
         <Tabs.Screen

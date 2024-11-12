@@ -6,6 +6,8 @@ import {
   StyleSheet,
   Touchable,
   TouchableOpacity,
+  StyleProp,
+  ViewStyle,
 } from 'react-native';
 import React from 'react';
 import { colors } from '@/Constant';
@@ -16,10 +18,10 @@ type Props = {
   Value: string;
   onChangeText: (text: string) => void;
   keyboardType?: KeyboardTypeOptions;
-  label: string;
+  label?: string;
   secureTextEntry?: boolean;
-  error: string;
-
+  error?: string;
+  style?: StyleProp<ViewStyle>;
   toggleSecure?: () => void;
   password?: boolean;
 };
@@ -34,11 +36,12 @@ export const CustomInput = ({
   error,
   password,
   toggleSecure,
+  style,
 }: Props): JSX.Element => {
   return (
-    <View>
-      <Text style={styles.label}>{label}</Text>
-      <View style={styles.container}>
+    <View style={{ flex: 1 }}>
+      {label && <Text style={styles.label}>{label}</Text>}
+      <View style={[styles.container, style]}>
         <TextInput
           style={styles.input}
           placeholder={placeholder}

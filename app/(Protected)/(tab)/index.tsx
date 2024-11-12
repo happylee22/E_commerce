@@ -1,15 +1,29 @@
+import Loading from '@/components/Ui/Loading';
+import SearchInput from '@/components/Ui/SearchInput';
+import Wrapper from '@/components/Ui/Wrapper';
+import { useGetAllProducts } from '@/link/TanStack/Queries';
 import { useRouter } from 'expo-router';
-import { Button, Text, View } from 'react-native';
+import { useState } from 'react';
+import ErrorComponent from '@/components/Ui/ErrorComponent';
+import Product from '@/components/Ui/Product';
 
 export default function Home() {
-  const router = useRouter();
-  const onPress = () => {
-    router.push('/login');
+  const [value, setValue] = useState('');
+  const onClear = () => setValue('');
+  const { data, isPending, isError, refetch } = useGetAllProducts();
+
+  const onchange = (value: string) => {
+    setValue(value);
   };
+  if (isError) {
+    return <ErrorComponent onRefetch={refetch} />;
+  }
+  if (isPending) return <Loading />;
+  console.log(data[0]);
   return (
-    <View>
-      <Button title="Navigate" onPress={onPress} />
-      <Text> Home</Text>
-    </View>
+    <Wrapper>
+      <SearchInput onChange={onchange} value={value} onClear={onClear} />
+      <Product data={data} />
+    </Wrapper>
   );
 }

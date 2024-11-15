@@ -29,7 +29,7 @@ export const ProductCard = ({
   const onPress = () => {
     router.push(`/product/${product.id}`);
   };
-  const percentageDiscount = Math.floor(product.discountPercentage);
+  const percentageDiscount = (product.discountPercentage / 100) * 100;
   return (
     <Pressable
       onPress={onPress}
@@ -52,7 +52,7 @@ export const ProductCard = ({
       <View style={styles.imageContainer}>
         <Image
           source={{ uri: product.images[0] }}
-          placeholder={require('@/assets/images/flying.png')}
+          placeholder={require('~/assets/gig.gif')}
           contentFit="cover"
           style={styles.image}
           placeholderContentFit="contain"

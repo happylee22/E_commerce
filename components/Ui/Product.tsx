@@ -1,27 +1,27 @@
-import { View, Text } from 'react-native';
-import React from 'react';
 import { FlashList } from '@shopify/flash-list';
-import { ProductType } from '@/Type';
-import ProductCard from './ProductCard';
+import { View } from 'react-native';
+
+import { ProductCard } from './ProductCard';
+
+import { ProductResponse } from '@/type';
 
 type Props = {
-  data: ProductType[];
+  data: ProductResponse[];
 };
 
-const Product = ({ data }: Props) => {
+export const Product = ({ data }: Props): JSX.Element => {
   return (
     <View style={{ flex: 1, marginTop: 20 }}>
       <FlashList
         data={data}
         estimatedItemSize={200}
         renderItem={({ item, index }) => (
-          <ProductCard product={item} index={index} />
+          <ProductCard product={item} index={index} key={index} />
         )}
         showsVerticalScrollIndicator={false}
         numColumns={2}
+        contentContainerStyle={{ paddingVertical: 10, paddingHorizontal: 5 }}
       />
     </View>
   );
 };
-
-export default Product;

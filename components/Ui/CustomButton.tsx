@@ -9,12 +9,11 @@ import {
 
 type Props = {
   buttonTitle: string;
-  disabled?: boolean;
   onPress: () => void;
+  disabled?: boolean;
   style?: StyleProp<ViewStyle>;
   color?: string;
 };
-
 export const CustomButton = ({
   buttonTitle,
   onPress,
@@ -36,6 +35,7 @@ export const CustomButton = ({
     </Pressable>
   );
 };
+
 const styles = StyleSheet.create({
   pressable: {
     height: 55,

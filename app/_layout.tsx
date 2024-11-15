@@ -36,10 +36,7 @@ export default function RootLayout() {
   return (
     <ThemeProvider value={colorScheme === 'dark' ? DarkTheme : DefaultTheme}>
       <QueryClientProvider client={queryClient}>
-        <Stack>
-          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
-        </Stack>
-        // paste toast under here
+        <Stack screenOptions={{ headerShown: false }} />
       </QueryClientProvider>
       <Toaster />
     </ThemeProvider>

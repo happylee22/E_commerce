@@ -1,3 +1,4 @@
+import { CartIcon } from '@/components/Cartlcon';
 import { AntDesign } from '@expo/vector-icons';
 import { Stack, useRouter } from 'expo-router';
 import React from 'react';
@@ -26,6 +27,7 @@ const OtherScreenLayout = () => {
               <AntDesign name="arrowleft" size={24} color="black" />
             </Pressable>
           ),
+          headerRight: () => <CartIcon />,
         }}
       >
         <Stack.Screen

@@ -6,6 +6,13 @@ export type Review = {
   reviewerEmail: string;
 };
 
+export type CartItem = {
+  title: string;
+  id: number;
+  qty: number;
+  price: number;
+  img: string;
+};
 export type Dimensions = {
   width: number;
   height: number;

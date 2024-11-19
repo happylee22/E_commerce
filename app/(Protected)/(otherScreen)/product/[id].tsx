@@ -4,19 +4,18 @@ import {
   useGetSimilarProducts,
   useGetSingleProduct,
 } from '@/link/tanstack/queries';
-import { Stack, useLocalSearchParams } from 'expo-router';
-import React, { useMemo, useState } from 'react';
+import { useLocalSearchParams } from 'expo-router';
+import React, { useMemo } from 'react';
 import ErrorComponent from '@/components/Ui/ErrorComponent';
-import { ScrollView } from 'react-native';
 
 import { BottomButtons } from '@/components/BottomButtons';
-import { SimilarProducts } from '@/components/SimilarProducts';
+
 import { ProductDetail } from '@/components/ProductDetail';
 
 const ProductDetails = () => {
   const { id } = useLocalSearchParams<{ id: string }>();
   const { data, isPending, isError, refetch } = useGetSingleProduct(id);
-  const [qty, setQty] = useState(0);
+
   const {
     data: similar,
     isPending: isPendingSimilar,
@@ -40,7 +39,7 @@ const ProductDetails = () => {
   return (
     <Wrapper>
       <ProductDetail product={data} similar={filterSimilarProduct} />
-      <BottomButtons id={data.id} stock={data.stock} qty={qty} />
+      <BottomButtons item={data} stock={data.stock} />
     </Wrapper>
   );
 };

@@ -1,9 +1,17 @@
 import { colors } from '@/Constant';
+import { useCartStore } from '@/link/tanstack/zustand/cart';
 import { AntDesign } from '@expo/vector-icons';
+import { usePathname, useRouter } from 'expo-router';
+import { useState } from 'react';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
 export const CartIcon = () => {
-  const onPress = () => {};
+  const cartItemLength = useCartStore((state) => state.items.length);
+  const router = useRouter();
+  const pathName = usePathname();
+  const onPress = () => {
+    router.push('/Cart');
+  };
   return (
     <Pressable
       onPress={onPress}
@@ -11,7 +19,7 @@ export const CartIcon = () => {
     >
       <AntDesign name="shoppingcart" color="white" size={23} />
       <View style={styles.abs}>
-        <Text style={{ color: 'white', fontSize: 10 }}>0</Text>
+        <Text style={{ color: 'white', fontSize: 10 }}>{cartItemLength}</Text>
       </View>
     </Pressable>
   );

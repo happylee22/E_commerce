@@ -1,4 +1,5 @@
 import { useCartStore } from '@/link/tanstack/zustand/cart';
+import { ProductResponse } from '@/type';
 import { AntDesign } from '@expo/vector-icons';
 import { useRouter } from 'expo-router';
 import {
@@ -10,8 +11,7 @@ import {
   View,
 } from 'react-native';
 import { toast } from 'sonner-native';
-
-import { ProductResponse } from '@/type';
+import { UpdateButtons } from './Ui/UpdateButton';
 import { colors } from '@/Constant';
 
 type Props = {
@@ -42,6 +42,8 @@ export const BottomButtons = ({ item, stock }: Props): JSX.Element => {
       price: item.price,
       qty: 1,
       img: item.thumbnail,
+      stock: item.stock,
+      brand: item.brand,
     });
     toast.success('Cart has been updated');
   };
@@ -68,19 +70,11 @@ export const BottomButtons = ({ item, stock }: Props): JSX.Element => {
       </View>
 
       {renderControlButtons && (
-        <View style={styles.controls}>
-          <TouchableOpacity
-            disabled={qtyInCart === 0}
-            onPress={onRemoveFromCart}
-            style={styles.iconStyle}
-          >
-            <AntDesign name="minus" size={30} color={colors.white} />
-          </TouchableOpacity>
-          <Text>{qtyInCart}</Text>
-          <TouchableOpacity style={styles.iconStyle} onPress={onAddItem}>
-            <AntDesign name="plus" size={30} color={colors.white} />
-          </TouchableOpacity>
-        </View>
+        <UpdateButtons
+          qtyInCart={qtyInCart}
+          onIncrease={onAddItem}
+          onDecrease={onRemoveFromCart}
+        />
       )}
 
       {!renderControlButtons && (
@@ -138,18 +132,5 @@ const styles = StyleSheet.create({
   absCart: {
     position: 'absolute',
     left: 4,
-  },
-  controls: {
-    flexDirection: 'row',
-    alignItems: 'center',
-    justifyContent: 'space-between',
-    flex: 1,
-  },
-  iconStyle: {
-    borderRadius: 5,
-    padding: 10,
-    backgroundColor: colors.yellow,
-    alignItems: 'center',
-    justifyContent: 'center',
   },
 });

@@ -1,19 +1,20 @@
-import { View, Text, StyleSheet } from 'react-native';
-import React, { useState } from 'react';
+import { Href, Link, useRouter } from 'expo-router';
+import { useState } from 'react';
+import { StyleSheet, Text, View } from 'react-native';
+
 import { CustomInput } from './CustomInput';
 import { CustomButton } from '../Ui/CustomButton';
-import { validatePassword, validateEmail } from '../../utils';
-import { Href, Link } from 'expo-router';
+import { validateEmail, validatePassword } from '@/utils';
+import { toast } from 'sonner-native';
 
-type props = {
+type Props = {
   register?: boolean;
 };
-
-const LoginForm = ({ register }: props) => {
+export const LoginForm = ({ register }: Props) => {
   const [values, setValues] = useState({
-    name: '',
-    email: '',
+    userName: '',
     password: '',
+    name: '',
   });
 
   const [errorEmail, setErrorEmail] = useState('');
@@ -21,86 +22,112 @@ const LoginForm = ({ register }: props) => {
   const [errorPassword, setErrorPassword] = useState('');
   const [secure, setSecure] = useState(true);
   const toggleSecure = () => setSecure((prev) => !prev);
+  const router = useRouter();
   const handleChange = (inputName: string, text: string) => {
     setValues((prev) => ({ ...prev, [inputName]: text }));
   };
-
-  const { email, password, name } = values;
-  const handleSubmit = () => {
+  const { userName, password, name } = values;
+  const handleSubmit = async () => {
     if (register && name.trim() === '') {
       setErrorName('please enter your name');
       return;
     }
+    try {
+      const res = await fetch('http://dummyjson.com/auth/login', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          userName: 'emilys',
+          password: 'emilypass',
+        }),
+        credentials: 'include',
+      });
+      const response = await res.json();
+      console.log(response);
+      if (register && name.trim() === '') {
+        setErrorName('Please enter your name');
+        return;
+      }
 
-    if (!validateEmail(email)) {
-      setErrorEmail('please enter a valid email adddress');
-      return;
-    }
-    if (!validatePassword(password)) {
-      setErrorPassword(
-        'password must include at least one uppercase letter, one lowercase and one number'
-      );
-      return;
-    }
+      if (!validatePassword(password)) {
+        setErrorPassword(
+          'Password must include at least one uppercase letter, one lowercase letter, one number, and one special character.'
+        );
 
-    setValues({
-      email: '',
-      name: '',
-      password: '',
-    });
-    setErrorEmail('');
-    setErrorPassword('');
-    setErrorName('');
+        return;
+      }
+
+      router.replace('/');
+
+      console.log({
+        userName,
+        password,
+        name,
+      });
+      setValues({
+        userName: '',
+        name: '',
+        password: '',
+      });
+      setErrorEmail('');
+      setErrorPassword('');
+      setErrorEmail('');
+      toast.success('success', {
+        description: 'welcome back',
+      });
+    } catch (error) {
+      console.log(error);
+      toast.error('something went wrong', {
+        description: 'please try again later!!',
+      });
+    }
   };
 
-  const disabled = email.trim() === '' || password.trim() === '';
-  const buttonText = register ? 'sign up' : 'sign in';
-  const accountText = register
-    ? 'Already have an account'
-    : "Don't have an account";
-  const actionText = register ? 'sign In' : 'sign Up';
+  const disabled = userName.trim() === '' || password.trim() === '';
+  const buttonTitle = register ? 'Sign up' : 'Sign in';
+  const bottomText = register ? 'Already' : 'Don’t';
+  const actionText = register ? 'Sign in' : 'Sign up';
   const href: Href<string | object> = register ? '/login' : '/register';
-
   return (
     <View style={styles.container}>
       {register && (
         <CustomInput
-          label="full name"
-          placeholder="e.g Omueti Happiness"
+          label="Full name"
+          placeholder="eg John Doe"
           keyboardType="default"
-          Value={name}
+          value={name}
           onChangeText={(text) => handleChange('name', text)}
           error={errorName}
         />
       )}
       <CustomInput
-        label="Email"
-        placeholder="Enter your Email"
+        label="UserName"
+        placeholder="Enter your userName"
         keyboardType="email-address"
-        Value={email}
-        onChangeText={(text) => handleChange('email', text)}
+        value={userName}
+        onChangeText={(text) => handleChange('userName', text)}
         error={errorEmail}
       />
       <CustomInput
-        label="password"
+        label="Password"
         placeholder="Enter your password"
         keyboardType="default"
-        Value={password}
+        value={password}
         onChangeText={(text) => handleChange('password', text)}
-        secureTextEntry={secure}
         error={errorPassword}
+        secureTextEntry={secure}
         toggleSecure={toggleSecure}
         password
       />
       <CustomButton
-        buttonTitle={buttonText}
-        onPress={handleSubmit}
         disabled={disabled}
+        buttonTitle={buttonTitle}
+        onPress={handleSubmit}
       />
 
       <Link href={href} asChild>
         <Text style={styles.account}>
-          {accountText}
+          {bottomText} have an account?{' '}
           <Text style={styles.register}>{actionText}</Text>
         </Text>
       </Link>
@@ -121,4 +148,3 @@ const styles = StyleSheet.create({
     textAlign: 'center',
   },
 });
-export default LoginForm;

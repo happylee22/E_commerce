@@ -6,7 +6,7 @@ type Props = {
   onRefetch: () => void;
 };
 
-const error = ({ onRefetch }: Props) => {
+const ErrorComponent = ({ onRefetch }: Props) => {
   return (
     <View
       style={{
@@ -32,4 +32,4 @@ const error = ({ onRefetch }: Props) => {
   );
 };
 
-export default error;
+export default ErrorComponent;

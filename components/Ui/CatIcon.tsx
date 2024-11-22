@@ -1,21 +1,30 @@
 import { colors } from '@/Constant';
+import { useCartStore } from '@/link/tanstack/zustand/cart';
 import { AntDesign } from '@expo/vector-icons';
-import React from 'react';
+import { usePathname, useRouter } from 'expo-router';
 import { Pressable, StyleSheet, Text, View } from 'react-native';
 
-type Props = {};
+export const CartIcon = () => {
+  const cartItemLength = useCartStore((state) => state.items.length);
+  const router = useRouter();
+  const pathname = usePathname();
 
-const CatIcon = (props: Props) => {
-  const onPress = () => {};
+  const isCartScreen = pathname === '/cart';
+  const onPress = () => {
+    router.push('/Cart');
+  };
+
+  if (isCartScreen) return null;
   return (
     <Pressable
       onPress={onPress}
       style={({ pressed }) => [styles.press, { opacity: pressed ? 0.5 : 1 }]}
     >
       <AntDesign name="shoppingcart" color="white" size={23} />
-
       <View style={styles.abs}>
-        <Text style={{ color: 'white', fontSize: 10 }}>0</Text>
+        <Text style={{ color: 'white', fontSize: 12, fontWeight: 'bold' }}>
+          {cartItemLength}
+        </Text>
       </View>
     </Pressable>
   );
@@ -32,6 +41,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     marginRight: 10,
   },
+
   abs: {
     position: 'absolute',
     top: -5,
@@ -44,5 +54,3 @@ const styles = StyleSheet.create({
     alignItems: 'center',
   },
 });
-
-export default CatIcon;

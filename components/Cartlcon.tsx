@@ -9,9 +9,12 @@ export const CartIcon = () => {
   const cartItemLength = useCartStore((state) => state.items.length);
   const router = useRouter();
   const pathName = usePathname();
+  const isCartScreen = pathName == '/Cart';
   const onPress = () => {
+    if (isCartScreen) return;
     router.push('/Cart');
   };
+  if (isCartScreen) return null;
   return (
     <Pressable
       onPress={onPress}

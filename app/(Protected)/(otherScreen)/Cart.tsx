@@ -1,16 +1,13 @@
-import { StyleSheet, Text, View } from 'react-native';
+import { Cart } from '@/components/Cart';
+import Wrapper from '@/components/Ui/Wrapper';
 import React from 'react';
 
-type Props = {};
-
-const Cart = (props: Props) => {
+const cart = () => {
   return (
-    <View>
-      <Text>Cart</Text>
-    </View>
+    <Wrapper>
+      <Cart />
+    </Wrapper>
   );
 };
 
-export default Cart;
-
-const styles = StyleSheet.create({});
+export default cart;

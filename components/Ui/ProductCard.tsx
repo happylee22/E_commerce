@@ -1,9 +1,18 @@
 import { colors } from '@/Constant';
+import { useFavorite } from '@/link/tanstack/zustand/favourite';
 import { ProductResponse } from '@/type';
 import { trimText } from '@/utils';
+import { AntDesign } from '@expo/vector-icons';
 import { Image } from 'expo-image';
 import { useRouter } from 'expo-router';
-import { Pressable, StyleSheet, Text, View } from 'react-native';
+import { useMemo } from 'react';
+import {
+  Pressable,
+  StyleSheet,
+  Text,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 
 type Props = {
   product: ProductResponse;
@@ -19,6 +28,9 @@ export const ProductCard = ({
   height,
 }: Props): JSX.Element => {
   const router = useRouter();
+  const isInFav = useFavorite((state) => state.isInFavorite);
+  const toggleFav = useFavorite((state) => state.toggleFavItem);
+  const items = useFavorite((state) => state.items);
   // to check percentage discount
   const newPriceBasedOnDiscountPercentage =
     (product.price * (100 - product.discountPercentage)) / 100;
@@ -30,6 +42,19 @@ export const ProductCard = ({
     router.push(`/product/${product.id}`);
   };
   const percentageDiscount = Math.floor(product.discountPercentage);
+  const iconToRender = useMemo(() => {
+    return isInFav(product.id) ? 'heart' : 'hearto';
+  }, [items]);
+
+  const handleFav = () => {
+    toggleFav({
+      id: product.id,
+      title: product.title,
+      image: product.thumbnail,
+      price: product.price,
+    });
+  };
+
   return (
     <Pressable
       onPress={onPress}
@@ -51,12 +76,15 @@ export const ProductCard = ({
       </View>
       <View style={styles.imageContainer}>
         <Image
-          source={{ uri: product.images[0] }}
+          source={{ uri: product.thumbnail }}
           placeholder={require('@/assets/images/flying.png')}
           contentFit="cover"
           style={styles.image}
           placeholderContentFit="contain"
         />
+        <TouchableOpacity style={styles.icon} onPress={handleFav}>
+          <AntDesign name={iconToRender} color={colors.yellow} size={20} />
+        </TouchableOpacity>
       </View>
       <View style={{ gap: 10 }}>
         <Text style={styles.title}>{trimText(product.title)}</Text>
@@ -122,5 +150,11 @@ const styles = StyleSheet.create({
     paddingVertical: 2,
     borderRadius: 5,
     zIndex: 10,
+  },
+  icon: {
+    position: 'absolute',
+    bottom: 0,
+    right: 0,
+    padding: 5,
   },
 });

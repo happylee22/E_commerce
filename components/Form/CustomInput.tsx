@@ -37,7 +37,7 @@ export const CustomInput = ({
   style,
 }: Props): JSX.Element => {
   return (
-    <View style={{ flex: 1 }}>
+    <View>
       {label && <Text style={styles.label}>{label}</Text>}
       <View style={[styles.container, style]}>
         <TextInput

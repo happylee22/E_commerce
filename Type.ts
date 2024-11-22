@@ -12,6 +12,8 @@ export type CartItem = {
   qty: number;
   price: number;
   img: string;
+  stock: number;
+  brand: string;
 };
 export type Dimensions = {
   width: number;
@@ -39,7 +41,6 @@ export type ProductResponse = {
   reviews: Review[];
   returnPolicy: string;
   minimumOrderQuantity: number;
-
   meta: {
     createdAt: string;
     updatedAt: string;

@@ -1,6 +1,7 @@
-import { create } from 'zustand';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
+
 import { CartItem } from '@/type';
 
 type CartStore = {
@@ -8,6 +9,7 @@ type CartStore = {
   addItem: (item: CartItem) => void;
   removeItem: (id: number) => void;
   clear: () => void;
+  deleteFromCart: (id: number) => void;
 };
 
 export const useCartStore = create<CartStore>()(
@@ -16,13 +18,14 @@ export const useCartStore = create<CartStore>()(
       items: [],
       addItem: (item) =>
         set((state) => {
+          // to check if the item is already in the cart
           const existingItem = state.items.find((i) => i.id === item.id);
 
           if (existingItem) {
             return {
-              items: state.items.map((i) =>
-                i.id === item.id ? { ...i, qty: i.qty + 1 } : i
-              ),
+              items: state.items.map((i) => {
+                return i.id === item.id ? { ...i, qty: i.qty + 1 } : i;
+              }),
             };
           }
 
@@ -41,6 +44,11 @@ export const useCartStore = create<CartStore>()(
           return { items: state.items.filter((i) => i.id !== id) };
         }),
       clear: () => set({ items: [] }),
+      deleteFromCart: (id) => {
+        return set((state) => ({
+          items: state.items.filter((i) => i.id !== id),
+        }));
+      },
     }),
     {
       name: 'cart',
